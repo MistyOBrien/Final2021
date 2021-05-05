@@ -15,16 +15,89 @@ require(tigerstats)
 require(forcats)
 OldData <-read.csv(file="covid91.csv",header=TRUE)
 #recode to remove the annoying "X" from the dataframe
-FinalData <- OldData %>% mutate(infected = recode(infected, aids = "covid", none = "OK" )) %>% select(-one_of("X"))
+TrialData <- OldData %>% mutate(infected = recode(infected, aids = "covid", none = "OK" )) %>% select(-one_of("X"))
 
-FinalData$treatment <- as.factor(FinalData$treatment)
-FinalData$sex <- as.factor(FinalData$sex)
-FinalData$infected <- as.factor(FinalData$infected)
-FinalData$LGBTQ <- as.factor(FinalData$LGBTQ)
-FinalData$DrugUser <- as.factor(FinalData$DrugUser)
+TrialSubset =select(TrialData, ! is.numeric)
+Alldata= purrr::map(TrialSubset, as.factor)
+Alldata = data.frame(Alldata)
 ```
+
+
 
 # Introduction
 
 A new  preventative vaccine (covid91) is under test in clinical trials. Given the nature of this vaccine it is suspected that the drug may exhibit different effectiveness across the variety of subpopulations tracked. Consider population subgroups consisting of Males, Females, just the drug users, and just those in the LGBTQ community. Write a complete report that separately considers this drug for each subgroup and your recommendations as to whether people in the subgroup should take the vaccine. Structure your report in four sections each devoted to one of the four subgroups, use null and alternative hypothesis statements and correct statistical verbage when referencing p-values in conclusions.
+
+
+# Methods
+```{r}
+maledata= filter(TrialData, sex=="guy")
+maledata$sex <- as.factor(maledata$sex)
+
+
+```
+# Males 
+
+## Bar Chart
+
+```{r}
+males <- maledata %>% group_by(infected,treatment) %>% summarize(count=n()) %>% mutate(prcnt=count/sum(count))
+
+
+# the group_by followed by summarize(count=n())
+
+basicC <- ggplot(males,aes(x=infected,y=count,fill=treatment))
+basicC + geom_bar(stat="identity",position="dodge")
+
+#Now for percentage plot
+
+basicCC <- ggplot(males,aes(x=infected,y=prcnt*100,fill=treatment)) 
+basicCC + geom_bar(stat="identity", position = "dodge")
+```
+
+From this bar chart it shows that out of about 340 males were infected with Covid-19 out of those infected approximately 58% of the males were given the drug, and approximately 42% of males the had gotten the placebo. The males who got the drug were more likely to get Covid-19 than compared to the males who got the placebo. 
+
+### Numerical Summaries  
+
+```{r}
+table1 <- xtabs(~treatment + infected, data=maledata)
+rowPerc(table1)
+colPerc(table1)
+print(table1)
+```
+
+From the table it shows that 340 males who were infected with Covid-19 out of 10,400 males in the study. 3.72% of the males who got the drug contracted Covid-19 and 2.55% of the males who go the placebo contracted Covid-19. It appears that was not an effective drug, due to the table showing thatmales who got the drug were about 50% more likely to contract Covid-19. This was not an effective drug for males.
+
+## Inferential Results
+
+```{r}
+chisq.test(table1)
+chisqtestGC(table1)
+fisher.test(table1)
+```
+
+The Chi squared table shows that the p-value is 0.0006181 is very small that is it very unlikely that the result are by chance. 
+$H_0$ The null hypothesis is that taking the drug, there is no difference of males contracting Covid-19 or not.
+$H_A$ Th alternative hypothesis is that the drug in fact does make a difference a male contracts Covid-19
+Therefore, we reject the null hypothesis 
+
+The odd ratio by the Fishers Exact Test is 1.473872, when taking the odds ratio and computing it into a percent of effectiveness by using the formala O/(1+O)x 100 you get 59.5% effectiveness of the Covid91 drug
+
+# Females 
+
+
+
+
+# LGBTQ
+
+
+
+# DrugUsers
+
+
+
+# Results and Conclusion
+
+
+
 
