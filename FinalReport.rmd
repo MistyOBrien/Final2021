@@ -33,10 +33,25 @@ A new  preventative vaccine (covid91) is under test in clinical trials. Given th
 ```{r}
 maledata= filter(TrialData, sex=="guy")
 maledata$sex <- as.factor(maledata$sex)
+maledata$infected= factor(maledata$infected)
+maledata$infected<- relevel(maledata$infected, "OK")
 
 femaledata= filter(TrialData, sex=="gal")
 femaledata$sex <- as.factor(femaledata$sex)
+femaledata$infected= factor(femaledata$infected)
+femaledata$infected<- relevel(femaledata$infected, "OK")
+levels(femaledata$infected)
 
+
+Druggiedata= filter(TrialData, DrugUser== "yes")
+Druggiedata$DrugUsers <- as.factor(Druggiedata$DrugUser)
+Druggiedata$infected= factor(Druggiedata$infected)
+Druggiedata$infected<- relevel(Druggiedata$infected, "OK")
+
+LGBTQdata= filter(TrialData, LGBTQ== "gay")
+LGBTQdata$LGBTQ <- as.factor(LGBTQdata$LGBTQ)
+LGBTQdata$infected= factor(LGBTQdata$infected)
+LGBTQdata$infected<- relevel(LGBTQdata$infected, "OK")
 ```
 # Males 
 
@@ -85,7 +100,8 @@ Therefore, we reject the null hypothesis
 
 The odd ratio by the Fishers Exact Test is 1.47:1, when taking the odds ratio and computing it into a percent of effectiveness by using the formala O/(1+O)x 100 you get 59.5% effectiveness of the Covid91 drug
 
-Ulimately the drug is 40% effective in the male population, which is completely ineffective
+Ultimately the drug is 40% effective in the male population, which is completely ineffective
+
 # Females 
 
 ## Bar Chart
@@ -101,7 +117,7 @@ basicC + geom_bar(stat="identity",position="dodge")
 
 #Now for percentage plot
 
-basicCC <- ggplot(males,aes(x=infected,y=prcnt*100,fill=treatment)) 
+basicCC <- ggplot(females,aes(x=infected,y=prcnt*100,fill=treatment)) 
 basicCC + geom_bar(stat="identity", position = "dodge")
 ```
 
@@ -110,33 +126,109 @@ basicCC + geom_bar(stat="identity", position = "dodge")
 ### Numerical Summaries  
 
 ```{r}
-table1 <- xtabs(~treatment + infected, data=femaledata)
-rowPerc(table1)
-colPerc(table1)
-print(table1)
+table2 <- xtabs(~infected + treatment, data=femaledata)
+rowPerc(table2)
+colPerc(table2)
+print(table2)
 ```
+
 
 
 ## Inferential Results
 
 ```{r}
-chisq.test(table1)
-chisqtestGC(table1)
-fisher.test(table1)
+chisq.test(table2)
+chisqtestGC(table2)
+fisher.test(table2)
 ```
-
+The drug is 67% effective for females 
 
 $H_0$ The null hypothesis is that taking the drug, there is no difference of males contracting Covid-19 or not.
 $H_A$ Th alternative hypothesis is that the drug in fact does make a difference a 
 
 # LGBTQ
 
+## Bar Chart
 
+```{r}
+gay <- maledata %>% group_by(infected,treatment) %>% summarize(count=n()) %>% mutate(prcnt=count/sum(count))
+
+
+# the group_by followed by summarize(count=n())
+
+basicC <- ggplot(gay,aes(x=infected,y=count,fill=treatment))
+basicC + geom_bar(stat="identity",position="dodge")
+
+#Now for percentage plot
+
+basicCC <- ggplot(gay,aes(x=infected,y=prcnt*100,fill=treatment)) 
+basicCC + geom_bar(stat="identity", position = "dodge")
+```
+
+ 
+
+### Numerical Summaries  
+
+```{r}
+table3 <- xtabs(~treatment + infected, data=LGBTQdata)
+rowPerc(table3)
+colPerc(table3)
+print(table3)
+```
+
+
+
+## Inferential Results
+
+```{r}
+chisq.test(table3)
+chisqtestGC(table3)
+fisher.test(table3)
+```
+From the table we can calculate the effective of the drug and we get 29% effective. This drug did not work on LGBTQ. 
 
 # DrugUsers
 
+## Bar Chart
+
+```{r}
+druggies <- Druggiedata %>% group_by(infected,treatment) %>% summarize(count=n()) %>% mutate(prcnt=count/sum(count))
 
 
+# the group_by followed by summarize(count=n())
+
+basicC <- ggplot(druggies,aes(x=infected,y=count,fill=treatment))
+basicC + geom_bar(stat="identity",position="dodge")
+
+#Now for percentage plot
+
+basicCC <- ggplot(druggies,aes(x=infected,y=prcnt*100,fill=treatment)) 
+basicCC + geom_bar(stat="identity", position = "dodge")
+```
+
+ 
+
+### Numerical Summaries  
+
+```{r}
+table4 <- xtabs(~treatment + infected, data=Druggiedata)
+rowPerc(table4)
+colPerc(table4)
+print(table4)
+```
+
+
+
+## Inferential Results
+
+```{r}
+chisq.test(table4)
+chisqtestGC(table4)
+fisher.test(table4)
+```
+
+ The effectiveness of the drug on the DrugUsers population is 60%. 
+ 
 # Results and Conclusion
 
 
