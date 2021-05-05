@@ -121,6 +121,7 @@ basicCC <- ggplot(females,aes(x=infected,y=prcnt*100,fill=treatment))
 basicCC + geom_bar(stat="identity", position = "dodge")
 ```
 
+This barchart shows that out of approximately 100 females who were infected with Covid-19, 33% were given the drug and 67% were given the placebo.
 
 
 ### Numerical Summaries  
@@ -131,7 +132,7 @@ rowPerc(table2)
 colPerc(table2)
 print(table2)
 ```
-
+From the table it shows that 607 females who were infected with Covid-19 out of 9,213 females in the study. 4.44% of the females who got the drug contracted Covid-19 and 8.67% of the females who go the placebo contracted Covid-19. It appears that was  an effective drug, due to the table showing that females who got the drug were about 50% less likely to contract Covid-19. This is an effective drug for females.
 
 
 ## Inferential Results
@@ -141,10 +142,14 @@ chisq.test(table2)
 chisqtestGC(table2)
 fisher.test(table2)
 ```
-The drug is 67% effective for females 
+The p-value is small at 0.0000000000000002 that it is extremely unlikely the result were to happen by chance.
 
-$H_0$ The null hypothesis is that taking the drug, there is no difference of males contracting Covid-19 or not.
-$H_A$ Th alternative hypothesis is that the drug in fact does make a difference a 
+$H_0$ The null hypothesis is that the drug makes no difference in the females population contracting Covid-19 or not.
+
+$H_A$ Th alternative hypothesis is that the drug in fact does make a difference in whether or not a female contracts Covid-19.
+Therefore, we null hypothesis
+The fisher exact test odd ratio is 2.05:1, when taking the odd ratio and computing it into a percent of effectiveness by using the formula O/(1+O)x 100 you get 67% of effective for females.
+Ultimately the drug is 67% effective in the female population, which is just a little bit effective.
 
 # LGBTQ
 
@@ -165,7 +170,8 @@ basicCC <- ggplot(gay,aes(x=infected,y=prcnt*100,fill=treatment))
 basicCC + geom_bar(stat="identity", position = "dodge")
 ```
 
- 
+ This barchart shows that out of approximately 100 LGBTQ who were infected with Covid-19, 33% were given the drug and 67% were given the placebo.
+
 
 ### Numerical Summaries  
 
@@ -176,7 +182,7 @@ colPerc(table3)
 print(table3)
 ```
 
-
+From the table it shows that 340 males who were infected with Covid-19 out of 10,400 males in the study. 3.72% of the males who got the drug contracted Covid-19 and 2.55% of the males who go the placebo contracted Covid-19. It appears that was not an effective drug, due to the table showing thatmales who got the drug were about 50% more likely to contract Covid-19. This was not an effective drug for males.
 
 ## Inferential Results
 
@@ -185,6 +191,14 @@ chisq.test(table3)
 chisqtestGC(table3)
 fisher.test(table3)
 ```
+The p-value is small at 0.0000000000000002 that it is extremely unlikely the result were to happen by chance.
+
+$H_0$ The null hypothesis is that the drug makes no difference in the LGBTQ population contracting Covid-19 or not.
+
+$H_A$ Th alternative hypothesis is that the drug in fact does make a difference in whether or not a LGBTQ Covid-19.
+Therefore, we null hypothesis
+The fisher exact test odd ratio is 0.40:1, when taking the odd ratio and computing it into a percent of effectiveness by using the formula O/(1+O)x 100 you get 29% of effective for LGBTQ.
+Ultimately the drug is 29% ineffective in the LGBTQ population, which is just completely ineffective.
 From the table we can calculate the effective of the drug and we get 29% effective. This drug did not work on LGBTQ. 
 
 # DrugUsers
@@ -206,7 +220,8 @@ basicCC <- ggplot(druggies,aes(x=infected,y=prcnt*100,fill=treatment))
 basicCC + geom_bar(stat="identity", position = "dodge")
 ```
 
- 
+From this bar chart it shows that out of about 100 drug users were infected with Covid-19 out of those infected approximately 32% of the drug users were given the drug, and approximately 68% of drug users the had gotten the placebo. The drug users who got the drug were more likely to get Covid-19 than compared to the drug users who got the placebo. 
+
 
 ### Numerical Summaries  
 
@@ -217,7 +232,7 @@ colPerc(table4)
 print(table4)
 ```
 
-
+From the table it shows that 117 drug users who were infected with Covid-19 out of 2,283 drug users in the study. 33.33% of the drug users who got the drug contracted Covid-19 and 66.67% of the drug users who go the placebo contracted Covid-19. It appears that was an effective drug, due to the table showing that drug users who got the drug were about 67% less likely to contract Covid-19. This was an effective drug for drug users.
 
 ## Inferential Results
 
@@ -227,10 +242,17 @@ chisqtestGC(table4)
 fisher.test(table4)
 ```
 
- The effectiveness of the drug on the DrugUsers population is 60%. 
+ The p-value is small at 0.002273 that it is extremely unlikely the result were to happen by chance.
+
+$H_0$ The null hypothesis is that the drug makes no difference in the DrugUsers population contracting Covid-19 or not.
+
+$H_A$ Th alternative hypothesis is that the drug in fact does make a difference in whether or not a DrugUsers contracts Covid-19.
+Therefore, we null hypothesis
+The fisher exact test odd ratio is 1.83:1, when taking the odd ratio and computing it into a percent of effectiveness by using the formula O/(1+O)x 100 you get 60% of effective for females.
+Ultimately the drug is 60% effective in the DrugUsers population, which is just a little bit effective.
  
-# Results and Conclusion
+# Discussion and Conclusion
 
-
+We looked at four population and found that 
 
 
